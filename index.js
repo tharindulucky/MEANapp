@@ -2,6 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/database');
 const path = require('path');
+const router = express.Router();
+const bodyParser = require('body-parser')
+
+const authentication = require('./routes/authentication')(router);
 
 const app = express();
 const port = 3000;
@@ -15,7 +19,10 @@ mongoose.connect(config.uri, (err) => {
     }
 });
 
-app.use(express.static(__dirname+'/client/dist/'))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(express.static(__dirname+'/client/dist/'));
+app.use('/authentication', authentication);
 
 app.get('*', function(req, res){
     res.sendFile(path.join(__dirname+'/client/dist/index.html'));
