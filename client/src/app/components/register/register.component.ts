@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,12 @@ export class RegisterComponent implements OnInit {
   usernameValid;
   usernameMsg;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private flashMsgModule: FlashMessagesService
+  ) {
     this.createForm();
   }
 
@@ -110,6 +116,7 @@ export class RegisterComponent implements OnInit {
         this.messageClass = 'alert alert-success';
         this.message = data.message;
         this.clearForm();
+        this.flashMsgModule.show("Registration Successful!", {cssClass: 'alert-success'});
         this.router.navigate(['/login'])
       }
     });
@@ -117,10 +124,14 @@ export class RegisterComponent implements OnInit {
   }
 
 
+
+  //Real Time functions that check availability of username and email
+
   checkEmail(){
 
     var email = this.form.get('email').value;
-    if(email){
+    //noinspection TypeScriptUnresolvedVariable
+    if(email && !this.form.controls.email.invalid){
       //noinspection TypeScriptUnresolvedFunction
       this.authService.checkEmail(email).subscribe(data => {
         if(!data.success){
@@ -131,13 +142,16 @@ export class RegisterComponent implements OnInit {
           this.emailMsg = data.message;
         }
       })
+    }else{
+      this.emailMsg = null;
     }
   }
 
   checkUsername(){
 
     var username = this.form.get('username').value;
-    if(username){
+    //noinspection TypeScriptUnresolvedVariable
+    if(username && !this.form.controls.username.invalid){
       //noinspection TypeScriptUnresolvedFunction
       this.authService.checkUsername(this.form.get('username').value).subscribe(data => {
         if(!data.success){
@@ -148,6 +162,8 @@ export class RegisterComponent implements OnInit {
           this.usernameMsg = data.message;
         }
       })
+    }else {
+      this.usernameMsg = null;
     }
   }
 

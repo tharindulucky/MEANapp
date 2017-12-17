@@ -22,7 +22,7 @@
     <div class="form-group">
       <label for="username">Username</label>
       <div [ngClass]="{'has-error': (form.controls.username.errors && form.controls.username.dirty) || (!usernameValid && form.controls.username.dirty), 'has-success': (!form.controls.username.errors && usernameValid)}">
-        <input type="text" class="form-control" id="username" name="username" placeholder="username" formControlName="username" (blur)="checkUsername()">
+        <input type="text" class="form-control" id="username" name="username" placeholder="username" formControlName="username" autocomplete="off" (input)="checkUsername()">
         <ul class="help-block">
           <li *ngIf="form.controls.username.errors?.required && form.controls.username.dirty">Username is required!</li>
           <li *ngIf="form.controls.username.errors?.minlength || form.controls.username.errors?.maxlength">Username must be between 5 to 15 characters</li>
