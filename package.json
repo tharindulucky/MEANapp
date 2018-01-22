@@ -23,6 +23,7 @@
     "cors": "^2.8.4",
     "express": "^4.16.2",
     "jsonwebtoken": "^8.1.0",
-    "mongoose": "^4.13.5"
+    "mongoose": "^4.13.5",
+    "validator": "^9.2.0"
   }
 }

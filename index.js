@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 
 const authentication = require('./routes/authentication')(router);
+const ads = require('./routes/ads')(router);
 
 const app = express();
 const port = 3000;
@@ -28,6 +29,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(__dirname+'/client/dist/'));
 app.use('/authentication', authentication);
+app.use('/ads', ads);
 
 app.get('*', function(req, res){
     res.sendFile(path.join(__dirname+'/client/dist/index.html'));
